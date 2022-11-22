@@ -15,12 +15,9 @@
 
 using dnlib.DotNet;
 
-namespace NETReactorSlayer.De4dot.Renamer.AsmModules
-{
-    public abstract class Ref
-    {
-        protected Ref(IMemberRef memberRef, MTypeDef owner, int index)
-        {
+namespace NETReactorSlayer.De4dot.Renamer.AsmModules {
+    public abstract class Ref {
+        protected Ref(IMemberRef memberRef, MTypeDef owner, int index) {
             MemberRef = memberRef;
             Owner = owner;
             Index = index;

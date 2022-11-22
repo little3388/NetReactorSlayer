@@ -13,11 +13,8 @@
     along with NETReactorSlayer.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-namespace NETReactorSlayer.De4dot
-{
-    public interface IDeobfuscatorInfo
-    {
-        IDeobfuscator CreateDeobfuscator();
+namespace NETReactorSlayer.De4dot {
+    public interface IDeobfuscatorInfo {
         string Name { get; }
     }
 }

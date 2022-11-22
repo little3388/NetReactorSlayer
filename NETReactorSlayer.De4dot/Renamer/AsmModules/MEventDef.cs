@@ -14,37 +14,28 @@
 */
 
 using System.Collections.Generic;
+using System.Linq;
 using dnlib.DotNet;
 
-namespace NETReactorSlayer.De4dot.Renamer.AsmModules
-{
-    public class MEventDef : Ref
-    {
-        public MEventDef(EventDef eventDef, MTypeDef owner, int index)
-            : base(eventDef, owner, index)
-        {
-        }
+namespace NETReactorSlayer.De4dot.Renamer.AsmModules {
+    public class MEventDef : Ref {
+        public MEventDef(IMemberRef memberRef, MTypeDef owner, int index)
+            : base(memberRef, owner, index) { }
 
-        public IEnumerable<MethodDef> MethodDefs()
-        {
+        public IEnumerable<MethodDef> MethodDefs() {
             if (EventDef.AddMethod != null)
                 yield return EventDef.AddMethod;
             if (EventDef.RemoveMethod != null)
                 yield return EventDef.RemoveMethod;
             if (EventDef.InvokeMethod != null)
                 yield return EventDef.InvokeMethod;
-            if (EventDef.OtherMethods != null)
-                foreach (var m in EventDef.OtherMethods)
-                    yield return m;
+            if (EventDef.OtherMethods == null)
+                yield break;
+            foreach (var m in EventDef.OtherMethods)
+                yield return m;
         }
 
-        public bool IsVirtual()
-        {
-            foreach (var method in MethodDefs())
-                if (method.IsVirtual)
-                    return true;
-            return false;
-        }
+        public bool IsVirtual() => MethodDefs().Any(method => method.IsVirtual);
 
         public MMethodDef AddMethod { get; set; }
         public EventDef EventDef => (EventDef)MemberRef;

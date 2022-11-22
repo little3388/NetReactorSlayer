@@ -16,14 +16,10 @@
 using System;
 using System.Collections.Generic;
 
-namespace NETReactorSlayer.De4dot.Renamer
-{
-    public class VariableNameCreator : TypeNames
-    {
-        static VariableNameCreator()
-        {
-            OurFullNameToShortName = new Dictionary<string, string>(StringComparer.Ordinal)
-            {
+namespace NETReactorSlayer.De4dot.Renamer {
+    public class VariableNameCreator : TypeNames {
+        static VariableNameCreator() {
+            OurFullNameToShortName = new Dictionary<string, string>(StringComparer.Ordinal) {
                 { "System.Boolean", "bool" },
                 { "System.Byte", "byte" },
                 { "System.Char", "char" },
@@ -41,8 +37,7 @@ namespace NETReactorSlayer.De4dot.Renamer
                 { "System.UIntPtr", "uintptr" },
                 { "System.Decimal", "decimal" }
             };
-            OurFullNameToShortNamePrefix = new Dictionary<string, string>(StringComparer.Ordinal)
-            {
+            OurFullNameToShortNamePrefix = new Dictionary<string, string>(StringComparer.Ordinal) {
                 { "System.Boolean", "Bool" },
                 { "System.Byte", "Byte" },
                 { "System.Char", "Char" },
@@ -62,17 +57,14 @@ namespace NETReactorSlayer.De4dot.Renamer
             };
         }
 
-        public VariableNameCreator()
-        {
+        public VariableNameCreator() {
             FullNameToShortName = OurFullNameToShortName;
             FullNameToShortNamePrefix = OurFullNameToShortNamePrefix;
         }
 
-        private static string LowerLeadingChars(string name)
-        {
+        private static string LowerLeadingChars(string name) {
             var s = "";
-            for (var i = 0; i < name.Length; i++)
-            {
+            for (var i = 0; i < name.Length; i++) {
                 var c = char.ToLowerInvariant(name[i]);
                 if (c == name[i])
                     return s + name.Substring(i);
@@ -82,8 +74,7 @@ namespace NETReactorSlayer.De4dot.Renamer
             return s;
         }
 
-        protected override string FixName(string prefix, string name)
-        {
+        protected override string FixName(string prefix, string name) {
             name = LowerLeadingChars(name);
             if (prefix == "")
                 return name;

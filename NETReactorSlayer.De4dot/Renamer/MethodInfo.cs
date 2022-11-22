@@ -15,13 +15,9 @@
 
 using NETReactorSlayer.De4dot.Renamer.AsmModules;
 
-namespace NETReactorSlayer.De4dot.Renamer
-{
-    public class MethodInfo : MemberInfo
-    {
-        public MethodInfo(MMethodDef methodDef) : base(methodDef)
-        {
-        }
+namespace NETReactorSlayer.De4dot.Renamer {
+    public class MethodInfo : MemberInfo {
+        public MethodInfo(Ref @ref) : base(@ref) { }
 
         public MMethodDef MethodDef => (MMethodDef)MemberRef;
     }

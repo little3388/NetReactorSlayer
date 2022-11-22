@@ -14,28 +14,20 @@
 */
 
 using System.Collections.Generic;
+using System.Linq;
 
-namespace NETReactorSlayer.De4dot.Renamer
-{
-    public class NameInfos
-    {
+namespace NETReactorSlayer.De4dot.Renamer {
+    public class NameInfos {
         public void Add(string name, NameCreator nameCreator) => _nameInfos.Add(new NameInfo(name, nameCreator));
 
-        public NameCreator Find(string typeName)
-        {
-            foreach (var nameInfo in _nameInfos)
-                if (typeName.Contains(nameInfo.Name))
-                    return nameInfo.NameCreator;
-
-            return null;
-        }
+        public NameCreator Find(string typeName) =>
+            (from nameInfo in _nameInfos where typeName.Contains(nameInfo.Name) select nameInfo.NameCreator)
+            .FirstOrDefault();
 
         private readonly IList<NameInfo> _nameInfos = new List<NameInfo>();
 
-        private class NameInfo
-        {
-            public NameInfo(string name, NameCreator nameCreator)
-            {
+        private class NameInfo {
+            public NameInfo(string name, NameCreator nameCreator) {
                 Name = name;
                 NameCreator = nameCreator;
             }

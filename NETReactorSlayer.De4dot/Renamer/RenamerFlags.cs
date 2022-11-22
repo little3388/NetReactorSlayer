@@ -15,11 +15,9 @@
 
 using System;
 
-namespace NETReactorSlayer.De4dot.Renamer
-{
+namespace NETReactorSlayer.De4dot.Renamer {
     [Flags]
-    public enum RenamerFlags
-    {
+    public enum RenamerFlags {
         RenameNamespaces = 1,
         RenameTypes = 2,
         RenameProperties = 4,

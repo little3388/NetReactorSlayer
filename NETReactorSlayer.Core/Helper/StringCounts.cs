@@ -17,12 +17,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace NETReactorSlayer.Core.Helper
-{
-    public class StringCounts
-    {
-        public void Add(string s)
-        {
+namespace NETReactorSlayer.Core.Helper {
+    public class StringCounts {
+        public void Add(string s) {
             _strings.TryGetValue(s, out var count);
             _strings[s] = count + 1;
         }
@@ -31,12 +28,11 @@ namespace NETReactorSlayer.Core.Helper
 
         public bool All(IList<string> list) => list.All(Exists);
 
-        public int Count(string s)
-        {
+        public int Count(string s) {
             _strings.TryGetValue(s, out var count);
             return count;
         }
 
-        private readonly Dictionary<string, int> _strings = new Dictionary<string, int>(StringComparer.Ordinal);
+        private readonly Dictionary<string, int> _strings = new(StringComparer.Ordinal);
     }
 }

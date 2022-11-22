@@ -16,17 +16,13 @@
 using System.Collections.Generic;
 using dnlib.DotNet;
 
-namespace NETReactorSlayer.De4dot.Renamer.AsmModules
-{
-    public class MMethodDef : Ref
-    {
+namespace NETReactorSlayer.De4dot.Renamer.AsmModules {
+    public class MMethodDef : Ref {
         public MMethodDef(MethodDef methodDef, MTypeDef owner, int index)
-            : base(methodDef, owner, index)
-        {
+            : base(methodDef, owner, index) {
             GenericParams = MGenericParamDef.CreateGenericParamDefList(MethodDef.GenericParameters);
-            VisibleParameterBaseIndex = methodDef.MethodSig != null && methodDef.MethodSig.HasThis ? 1 : 0;
-            for (var i = 0; i < methodDef.Parameters.Count; i++)
-            {
+            VisibleParameterBaseIndex = methodDef.MethodSig is { HasThis: true } ? 1 : 0;
+            for (var i = 0; i < methodDef.Parameters.Count; i++) {
                 var param = methodDef.Parameters[i];
                 if (param.IsNormalMethodParameter)
                     VisibleParameterCount++;
@@ -44,10 +40,8 @@ namespace NETReactorSlayer.De4dot.Renamer.AsmModules
 
         public bool IsStatic() => MethodDef.IsStatic;
 
-        public IEnumerable<MParamDef> AllParamDefs
-        {
-            get
-            {
+        public IEnumerable<MParamDef> AllParamDefs {
+            get {
                 yield return ReturnParamDef;
                 foreach (var paramDef in ParamDefs)
                     yield return paramDef;

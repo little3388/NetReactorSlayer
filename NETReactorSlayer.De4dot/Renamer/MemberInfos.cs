@@ -16,10 +16,8 @@
 using System.Collections.Generic;
 using NETReactorSlayer.De4dot.Renamer.AsmModules;
 
-namespace NETReactorSlayer.De4dot.Renamer
-{
-    public class MemberInfos
-    {
+namespace NETReactorSlayer.De4dot.Renamer {
+    public class MemberInfos {
         public MemberInfos() => _checkWinFormsClass = new DerivedFrom(WinformsClasses);
 
         public bool IsWinFormsClass(MTypeDef type) => _checkWinFormsClass.Check(type);
@@ -48,10 +46,8 @@ namespace NETReactorSlayer.De4dot.Renamer
 
         public void Add(MEventDef evt) => _allEventInfos[evt] = new EventInfo(evt);
 
-        public void Initialize(Modules modules)
-        {
-            foreach (var type in modules.AllTypes)
-            {
+        public void Initialize(Modules modules) {
+            foreach (var type in modules.AllTypes) {
                 _allTypeInfos[type] = new TypeInfo(type, this);
 
                 foreach (var gp in type.GenericParams)
@@ -66,8 +62,7 @@ namespace NETReactorSlayer.De4dot.Renamer
                 foreach (var prop in type.AllProperties)
                     Add(prop);
 
-                foreach (var method in type.AllMethods)
-                {
+                foreach (var method in type.AllMethods) {
                     _allMethodInfos[method] = new MethodInfo(method);
                     foreach (var gp in method.GenericParams)
                         _allGenericParamInfos[gp] = new GenericParamInfo(gp);
@@ -77,23 +72,20 @@ namespace NETReactorSlayer.De4dot.Renamer
             }
         }
 
-        private readonly Dictionary<MEventDef, EventInfo> _allEventInfos = new Dictionary<MEventDef, EventInfo>();
-        private readonly Dictionary<MFieldDef, FieldInfo> _allFieldInfos = new Dictionary<MFieldDef, FieldInfo>();
+        private readonly Dictionary<MEventDef, EventInfo> _allEventInfos = new();
+        private readonly Dictionary<MFieldDef, FieldInfo> _allFieldInfos = new();
 
-        private readonly Dictionary<MGenericParamDef, GenericParamInfo> _allGenericParamInfos =
-            new Dictionary<MGenericParamDef, GenericParamInfo>();
+        private readonly Dictionary<MGenericParamDef, GenericParamInfo> _allGenericParamInfos = new();
 
-        private readonly Dictionary<MMethodDef, MethodInfo> _allMethodInfos = new Dictionary<MMethodDef, MethodInfo>();
-        private readonly Dictionary<MParamDef, ParamInfo> _allParamInfos = new Dictionary<MParamDef, ParamInfo>();
+        private readonly Dictionary<MMethodDef, MethodInfo> _allMethodInfos = new();
+        private readonly Dictionary<MParamDef, ParamInfo> _allParamInfos = new();
 
-        private readonly Dictionary<MPropertyDef, PropertyInfo> _allPropertyInfos =
-            new Dictionary<MPropertyDef, PropertyInfo>();
+        private readonly Dictionary<MPropertyDef, PropertyInfo> _allPropertyInfos = new();
 
-        private readonly Dictionary<MTypeDef, TypeInfo> _allTypeInfos = new Dictionary<MTypeDef, TypeInfo>();
+        private readonly Dictionary<MTypeDef, TypeInfo> _allTypeInfos = new();
         private readonly DerivedFrom _checkWinFormsClass;
 
-        private static readonly string[] WinformsClasses =
-        {
+        private static readonly string[] WinformsClasses = {
             #region Win Forms class names
 
             "System.Windows.Forms.Control",

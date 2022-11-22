@@ -13,10 +13,8 @@
     along with NETReactorSlayer.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-namespace NETReactorSlayer.Core.Helper
-{
-    public class MethodBodyHeader
-    {
+namespace NETReactorSlayer.Core.Helper {
+    public class MethodBodyHeader {
         public uint CodeSize;
         public ushort Flags;
         public uint LocalVarSigTok;

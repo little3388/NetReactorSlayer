@@ -16,12 +16,9 @@
 using System.Collections.Generic;
 using dnlib.DotNet.Emit;
 
-namespace NETReactorSlayer.De4dot
-{
-    public class PushedArgs
-    {
-        public PushedArgs(int numArgs)
-        {
+namespace NETReactorSlayer.De4dot {
+    public class PushedArgs {
+        public PushedArgs(int numArgs) {
             _nextIndex = numArgs - 1;
             _args = new List<Instruction>(numArgs);
             for (var i = 0; i < numArgs; i++)
@@ -34,8 +31,7 @@ namespace NETReactorSlayer.De4dot
 
         internal void Pop() => _args[++_nextIndex] = null;
 
-        public Instruction Get(int i)
-        {
+        public Instruction Get(int i) {
             if (0 <= i && i < _args.Count)
                 return _args[i];
             return null;

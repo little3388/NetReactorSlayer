@@ -14,43 +14,31 @@
 */
 
 using System.Collections.Generic;
+using System.Linq;
 using dnlib.DotNet;
 
-namespace NETReactorSlayer.De4dot.Renamer.AsmModules
-{
-    public class MPropertyDef : Ref
-    {
-        public MPropertyDef(PropertyDef propertyDef, MTypeDef owner, int index)
-            : base(propertyDef, owner, index)
-        {
-        }
+namespace NETReactorSlayer.De4dot.Renamer.AsmModules {
+    public class MPropertyDef : Ref {
+        public MPropertyDef(IMemberRef memberRef, MTypeDef owner, int index)
+            : base(memberRef, owner, index) { }
 
-        public IEnumerable<MethodDef> MethodDefs()
-        {
+        public IEnumerable<MethodDef> MethodDefs() {
             if (PropertyDef.GetMethod != null)
                 yield return PropertyDef.GetMethod;
             if (PropertyDef.SetMethod != null)
                 yield return PropertyDef.SetMethod;
-            if (PropertyDef.OtherMethods != null)
-                foreach (var m in PropertyDef.OtherMethods)
-                    yield return m;
+            if (PropertyDef.OtherMethods == null)
+                yield break;
+            foreach (var m in PropertyDef.OtherMethods)
+                yield return m;
         }
 
-        public bool IsVirtual()
-        {
-            foreach (var method in MethodDefs())
-                if (method.IsVirtual)
-                    return true;
-            return false;
-        }
+        public bool IsVirtual() => MethodDefs().Any(method => method.IsVirtual);
 
-        public bool IsItemProperty()
-        {
-            if (GetMethod != null && GetMethod.VisibleParameterCount >= 1)
+        public bool IsItemProperty() {
+            if (GetMethod is { VisibleParameterCount: >= 1 })
                 return true;
-            if (SetMethod != null && SetMethod.VisibleParameterCount >= 2)
-                return true;
-            return false;
+            return SetMethod is { VisibleParameterCount: >= 2 };
         }
 
         public MMethodDef GetMethod { get; set; }

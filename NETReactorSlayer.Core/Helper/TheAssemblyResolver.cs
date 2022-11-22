@@ -16,23 +16,20 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using dnlib.DotNet;
 
-namespace NETReactorSlayer.Core.Helper
-{
-    public class TheAssemblyResolver : AssemblyResolver
-    {
-        public TheAssemblyResolver()
-        {
+namespace NETReactorSlayer.Core.Helper {
+    public class TheAssemblyResolver : AssemblyResolver {
+        public TheAssemblyResolver() {
             EnableTypeDefCache = true;
             AddOtherSearchPaths(PostSearchPaths);
         }
 
         public void AddModule(ModuleDef module) => AddToCache(module.Assembly);
 
-        private static void AddOtherSearchPaths(ICollection<string> paths)
-        {
+        private static void AddOtherSearchPaths(ICollection<string> paths) {
             var dirPf = Environment.GetEnvironmentVariable("ProgramFiles");
             AddOtherAssemblySearchPaths(paths, dirPf);
             var dirPFx86 = Environment.GetEnvironmentVariable("ProgramFiles(x86)");
@@ -40,13 +37,13 @@ namespace NETReactorSlayer.Core.Helper
                 AddOtherAssemblySearchPaths(paths, dirPFx86);
 
             var windir = Environment.GetEnvironmentVariable("WINDIR");
-            if (string.IsNullOrEmpty(windir)) return;
+            if (string.IsNullOrEmpty(windir))
+                return;
             AddIfExists(paths, windir, @"Microsoft.NET\Framework\v1.1.4322");
             AddIfExists(paths, windir, @"Microsoft.NET\Framework\v1.0.3705");
         }
 
-        private static void AddOtherAssemblySearchPaths(ICollection<string> paths, string path)
-        {
+        private static void AddOtherAssemblySearchPaths(ICollection<string> paths, string path) {
             if (string.IsNullOrEmpty(path))
                 return;
             AddSilverlightDirs(paths, Path.Combine(path, @"Microsoft Silverlight"));
@@ -151,29 +148,22 @@ namespace NETReactorSlayer.Core.Helper
             AddIfExists(paths, path, @"Microsoft SDKs\F#\3.0\Framework\v4.0");
         }
 
-        private static void AddSilverlightDirs(ICollection<string> paths, string basePath)
-        {
+        private static void AddSilverlightDirs(ICollection<string> paths, string basePath) {
             if (!Directory.Exists(basePath))
                 return;
-            try
-            {
+            try {
                 var di = new DirectoryInfo(basePath);
-                foreach (var dir in di.GetDirectories())
-                    if (Regex.IsMatch(dir.Name, @"^\d+(?:\.\d+){3}$"))
-                        AddIfExists(paths, basePath, dir.Name);
-            }
-            catch
-            {
-            }
+                foreach (var dir in di.GetDirectories().Where(dir => Regex.IsMatch(dir.Name, @"^\d+(?:\.\d+){3}$")))
+                    AddIfExists(paths, basePath, dir.Name);
+            } catch { }
         }
 
-        private static void AddIfExists(ICollection<string> paths, string basePath, string extraPath)
-        {
+        private static void AddIfExists(ICollection<string> paths, string basePath, string extraPath) {
             var path = Path.Combine(basePath, extraPath);
             if (Directory.Exists(path))
                 paths.Add(path);
         }
 
-        public static readonly TheAssemblyResolver Instance = new TheAssemblyResolver();
+        public static readonly TheAssemblyResolver Instance = new();
     }
 }
